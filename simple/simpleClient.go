@@ -3,7 +3,6 @@ package simple
 import (
 	"fmt"
 	"net"
-	"os"
 )
 
 func SimpleClient() {
@@ -23,10 +22,13 @@ func SimpleClient() {
 	}
 	defer conn.Close()
 
-	// 保持UDP Socket文件一直打开
-	b := make([]byte, 1)
-	os.Stdin.Read(b)
-
 	conn.Write([]byte("hello"))
-	fmt.Printf("<%s>\n", conn.RemoteAddr())
+	// 保持UDP Socket文件一直打开
+	data := make([]byte, 1024)
+	n, err := conn.Read(data)
+	if err != nil {
+		return
+	}
+
+	fmt.Printf("read %s from <%s>\n", data[:n], conn.RemoteAddr())
 }
