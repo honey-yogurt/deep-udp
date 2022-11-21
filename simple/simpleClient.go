@@ -23,7 +23,6 @@ func SimpleClient() {
 	defer conn.Close()
 
 	conn.Write([]byte("hello"))
-	// 保持UDP Socket文件一直打开
 	data := make([]byte, 1024)
 	n, err := conn.Read(data)
 	if err != nil {
